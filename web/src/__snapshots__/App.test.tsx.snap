@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`App displays repos 1`] = `
+exports[`App (1) lists repos 1`] = `
 <div
   className="App"
 >
@@ -33,7 +33,7 @@ exports[`App displays repos 1`] = `
       className="repo-list"
     >
       <li
-        className="repo-item "
+        className="repo-item"
       >
         <div
           className="header"
@@ -71,7 +71,7 @@ exports[`App displays repos 1`] = `
         </div>
       </li>
       <li
-        className="repo-item "
+        className="repo-item"
       >
         <div
           className="header"
@@ -92,6 +92,194 @@ exports[`App displays repos 1`] = `
           </span>
           <span>
             888
+          </span>
+        </div>
+        <div
+          className="body"
+        >
+          <span>
+            AUTHOR: SuperWoman
+          </span>
+          <span>
+            DATE: Tomorrow
+          </span>
+          <span>
+            MESSAGE: Huh?
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+`;
+
+exports[`App (2) can select repo 1`] = `
+<div
+  className="App"
+>
+  <div
+    className="repo-list"
+  >
+    <div
+      className="button-row"
+    >
+      <button
+        className="selected"
+        onClick={[Function]}
+      >
+        All
+      </button>
+      <button
+        className=""
+        onClick={[Function]}
+      >
+        English
+      </button>
+      <button
+        className=""
+        onClick={[Function]}
+      >
+        French
+      </button>
+    </div>
+    <ul
+      className="repo-list"
+    >
+      <li
+        className="repo-item selected"
+      >
+        <div
+          className="header"
+        >
+          <button
+            className="name"
+            onClick={[Function]}
+          >
+            JSONExample
+          </button>
+          <span
+            className="description"
+          >
+            An example repository from a JSON file.
+          </span>
+          <span>
+            English
+          </span>
+          <span>
+            999
+          </span>
+        </div>
+        <div
+          className="body"
+        >
+          <span>
+            AUTHOR: SuperWoman
+          </span>
+          <span>
+            DATE: Tomorrow
+          </span>
+          <span>
+            MESSAGE: Huh?
+          </span>
+        </div>
+      </li>
+      <li
+        className="repo-item"
+      >
+        <div
+          className="header"
+        >
+          <button
+            className="name"
+            onClick={[Function]}
+          >
+            JSONExample2
+          </button>
+          <span
+            className="description"
+          >
+            An SECOND example repository from a JSON file.
+          </span>
+          <span>
+            French
+          </span>
+          <span>
+            888
+          </span>
+        </div>
+        <div
+          className="body"
+        >
+          <span>
+            AUTHOR: SuperWoman
+          </span>
+          <span>
+            DATE: Tomorrow
+          </span>
+          <span>
+            MESSAGE: Huh?
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+`;
+
+exports[`App (3) can filter by language button 1`] = `
+<div
+  className="App"
+>
+  <div
+    className="repo-list"
+  >
+    <div
+      className="button-row"
+    >
+      <button
+        className=""
+        onClick={[Function]}
+      >
+        All
+      </button>
+      <button
+        className="selected"
+        onClick={[Function]}
+      >
+        English
+      </button>
+      <button
+        className=""
+        onClick={[Function]}
+      >
+        French
+      </button>
+    </div>
+    <ul
+      className="repo-list"
+    >
+      <li
+        className="repo-item selected"
+      >
+        <div
+          className="header"
+        >
+          <button
+            className="name"
+            onClick={[Function]}
+          >
+            JSONExample
+          </button>
+          <span
+            className="description"
+          >
+            An example repository from a JSON file.
+          </span>
+          <span>
+            English
+          </span>
+          <span>
+            999
           </span>
         </div>
         <div

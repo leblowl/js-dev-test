@@ -6,16 +6,13 @@ import App from './App';
 import renderer from 'react-test-renderer';
 import * as request from './util/request';
 import * as event from './App/event.tsx';
-const { act } = renderer;
 
-test('renders without crashing', () => {
+test('App renders without crashing', () => {
   const div = document.createElement('div');
   ReactDOM.render(<App />, div);
 });
 
-test('App displays repos', async () => {
-  let comp;
-
+describe('App', () => {
   const fakeRepos = [
     {
      "id": 12345678,
@@ -59,10 +56,31 @@ test('App displays repos', async () => {
     }
   });
 
-  await act(async () => {
-    comp = renderer.create(<App />);
+  let rendered = renderer.create(<App />);
+  let root = rendered.root;
+
+  test('(1) lists repos', () => {
+    let tree = rendered.toJSON();
+    expect(tree).toMatchSnapshot();
   });
 
-  let tree = comp.toJSON();
-  expect(tree).toMatchSnapshot();
+  test('(2) can select repo', () => {
+    root.findAll((x) => x.props.className === 'repo-item')[0]
+        .find((x) => x.props.className === 'name')
+        .props
+        .onClick();
+
+    let tree = rendered.toJSON();
+    expect(tree).toMatchSnapshot();
+  });
+
+  test('(3) can filter by language button', () => {
+    root.find((x) => x.props.className === 'button-row')
+        .findAll((x) => x.type === 'button')[1]
+        .props
+        .onClick();
+
+    let tree = rendered.toJSON();
+    expect(tree).toMatchSnapshot();
+  });
 });

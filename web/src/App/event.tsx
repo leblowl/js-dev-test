@@ -20,7 +20,7 @@ const onReceiveLatestCommits = function(
 
     state.entities.repos[ndx].latestCommit = (data.data[0] && data.data[0].commit) || {
       'author': {'name': 'test', 'date': 'now'},
-      'message': 'This is a placeholder message for when Github unblocks me'
+      'message': 'This is a placeholder message.'
     };
     return state;
   });

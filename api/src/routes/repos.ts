@@ -77,18 +77,12 @@ const fetchRemoteRepos = function(onLoad: Function, onError: Function) {
 const getRepos = function(onLoad: Function, onError: Function) {
   let localRepos = loadLocalRepos(reposPath);
 
-  // Got rate-limited by Github!
-  //fetchRemoteRepos(
-  //  (data: Array<Object>) => {
-  //    onLoad(data.concat(localRepos));
-  //  },
-  //  onError
-  //);
-  // Hack for testing:
-  //  Downloaded remote repos JSON from Github.
-  let remoteRepos = loadLocalRepos(reposRemoteTmpPath);
-
-  onLoad(remoteRepos.concat(localRepos).filter((x: any) => x.fork === false));
+  fetchRemoteRepos(
+    (data: Array<Object>) => {
+      onLoad(data.concat(localRepos).filter((x: any) => x.fork === false));
+    },
+    onError
+  );
 }
 
 export const repos = express.Router();

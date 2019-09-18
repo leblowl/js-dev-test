@@ -27,9 +27,9 @@ const RepoItem: React.FunctionComponent<{
   emit: Function;
 }> = function({ repo, emit }) {
 
-  let selectedClass = repo.selected ? 'selected' : '';
+  let selectedClass = repo.selected ? ' selected' : '';
   return (
-    <li className={'repo-item ' + selectedClass}>
+    <li className={'repo-item' + selectedClass}>
       <div className='header'>
         <button
           className='name'
