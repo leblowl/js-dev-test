@@ -51,27 +51,42 @@ ul {
   margin: 1em 1em;
   border-radius: 4px;
   display: flex;
+  flex-direction: column;
+}
+
+.repo-item.selected {
+  border: 1px solid blue;
+}
+
+.repo-item .header {
+  display: flex;
   justify-content: flex-start;
 }
 
-.repo-item button.name {
+.repo-item .header button.name {
   color: #0099FF;
   text-align: left;
   max-width: 20vw;
   flex: 1;
 }
 
-.repo-item span.description {
+.repo-item .header span.description {
   flex: 1;
 }
 
-.repo-item span {
+.repo-item .header span {
   margin: 0 1em;
   text-align: left;
 }
 
-.repo-item.selected {
-  border: 1px solid blue;
+.repo-item .body {
+  display: none;
+  padding: 2em 1em;
+}
+
+.repo-item.selected .body {
+  display: flex;
+  flex-direction: column;
 }
 
 .App {

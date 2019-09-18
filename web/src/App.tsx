@@ -5,23 +5,42 @@ import * as model from './App/model';
 import * as event from './App/event';
 
 
+const RepoItemDetails: React.FunctionComponent<{
+  repo: Repo;
+  emit: Function;
+}> = function({ repo, emit }) {
+  if (repo.latestCommit) {
+    return (
+      <div className='body'>
+        <span>{'AUTHOR: ' + repo.latestCommit.author.name}</span>
+        <span>{'DATE: ' + repo.latestCommit.author.date}</span>
+        <span>{'MESSAGE: ' + repo.latestCommit.message}</span>
+      </div>
+    );
+  } else {
+    return <div className='body'></div>;
+  }
+}
+
 const RepoItem: React.FunctionComponent<{
   repo: Repo;
   emit: Function;
 }> = function({ repo, emit }) {
 
   let selectedClass = repo.selected ? 'selected' : '';
-
   return (
     <li className={'repo-item ' + selectedClass}>
-      <button
-        className='name'
-        onClick={() => emit(event.onSelectRepo, repo.id)}>
-        {repo.name}
-      </button>
-      <span className='description'>{repo.description}</span>
-      <span>{repo.language}</span>
-      <span>{repo.forks_count}</span>
+      <div className='header'>
+        <button
+          className='name'
+          onClick={() => emit(event.onSelectRepo, repo.id)}>
+          {repo.name}
+        </button>
+        <span className='description'>{repo.description}</span>
+        <span>{repo.language}</span>
+        <span>{repo.forks_count}</span>
+      </div>
+      <RepoItemDetails repo={repo} emit={emit}/>
     </li>
   );
 };
@@ -35,7 +54,6 @@ const LanguageButtons: React.FunctionComponent<{
   return (
     <div className='button-row'>
       {languages.map((x) => {
-        console.log(x);
         return (
           <button
             key={x}
