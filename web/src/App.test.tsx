@@ -4,8 +4,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import renderer from 'react-test-renderer';
-import * as request from './util/request';
-import * as event from './App/event.tsx';
+import * as event from './App/event';
+import * as api from './App/api';
 
 test('App renders without crashing', () => {
   const div = document.createElement('div');
@@ -41,19 +41,12 @@ describe('App', () => {
       }
   ];
 
-  // NOTE: Couldn't get spyOn to work for event.getRepo...
-  // So I am simply spying on request.get for now... adding a little conditional
-  // on the URL...
-  // TODO: Fixme!
-  jest.spyOn(request, 'get').mockImplementation((url, onLoad, onError) => {
-    // This is pretty resilient
-    if (url === event.reposUrl) {
-      onLoad(fakeRepos);
-    }
-    // This is very fragile
-    if (url.startsWith('https://api.github.com/repos/')) {
-      onLoad(fakeLatestCommit);
-    }
+  jest.spyOn(api, 'getRepos').mockImplementation((onLoad, onError) => {
+    onLoad(fakeRepos);
+  });
+
+  jest.spyOn(api, 'getLatestRepoCommits').mockImplementation((repo, onLoad, onError) => {
+    onLoad(fakeLatestCommit);
   });
 
   let rendered = renderer.create(<App />);

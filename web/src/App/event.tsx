@@ -1,6 +1,6 @@
 import { EmitApp, Repo, Commit } from './typings';
 import * as model from './model';
-import * as request from '../util/request';
+import * as api from './api';
 
 
 /**
@@ -9,13 +9,6 @@ import * as request from '../util/request';
  */
 function onlyUnique(value: any, index: number, self: Array<any>) {
       return self.indexOf(value) === index;
-}
-
-/**
- * Get Github latest commits URL for a given repo.
- */
-const repoCommitUrl = function(repo: Repo) {
-  return `https://api.github.com/repos/${repo.full_name}/commits`;
 }
 
 /**
@@ -40,13 +33,6 @@ const onReceiveLatestCommits = function(
 }
 
 /**
- * Fetch latest repo commits from Github.
- */
-const getLatestRepoCommits = function(repo: Repo, onLoad: Function, onErr: Function) {
-  request.get(repoCommitUrl(repo), onLoad, onErr);
-}
-
-/**
  * On requesting latest repo commits, fetch latest repo commits
  * and emit onReceiveLatestCommits event for each repo.
  */
@@ -58,7 +44,7 @@ const onRequestLatestCommits = function(
     let onResp = (data: Array<Commit>) => {
       app.emit(onReceiveLatestCommits, { repo, data });
     }
-    getLatestRepoCommits(repo, onResp, onResp);
+    api.getLatestRepoCommits(repo, onResp, onResp);
   });
 }
 
@@ -82,18 +68,6 @@ const onInitState = function(
 }
 
 /**
- * URL for application backend repos.
- */
-const reposUrl = 'http://localhost:4000/repos';
-
-/**
- * Fetch repos from application backend.
- */
-const getRepos = function(onLoad: Function, onErr: Function) {
-  request.get(reposUrl, onLoad, onErr);
-}
-
-/**
  * On app mounting, fetch repos from application backend and trigger
  * app state initialization.
  */
@@ -101,7 +75,7 @@ const onAppMount = function(
   app: EmitApp,
   data: Array<Repo>
 ) {
-  getRepos((data: Array<Repo>) => {
+  api.getRepos((data: Array<Repo>) => {
     app.emit(onInitState, data);
   }, console.error);
 }
@@ -146,4 +120,4 @@ const onFilterByLanguage = function(
   });
 }
 
-export { reposUrl, getRepos, getLatestRepoCommits, onAppMount, onInitState, onSelectRepo, onFilterByLanguage };
+export { onAppMount, onInitState, onSelectRepo, onFilterByLanguage };
