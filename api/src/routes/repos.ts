@@ -4,6 +4,9 @@ import * as https from 'https';
 import * as fs from 'fs';
 import { config } from '../config';
 
+const reposPath = '/repos.json';
+const reposRemoteTmpPath = '/repos-remote.json';
+
 /**
  * Get full path to data file, given a path relative to the data directory.
  */
@@ -14,8 +17,8 @@ const getDataPath = function(relPath: String) {
 /**
  * Load & return local repos from project data directory.
  */
-const loadLocalRepos = function() {
-  let dataPath = getDataPath('/repos.json');
+const loadLocalRepos = function(relPath: String) {
+  let dataPath = getDataPath(relPath);
   let content = fs.readFileSync(dataPath, {'encoding': 'utf-8'});
   return JSON.parse(content);
 }
@@ -72,7 +75,7 @@ const fetchRemoteRepos = function(onLoad: Function, onError: Function) {
  * Get all repos (local & remote).
  */
 const getRepos = function(onLoad: Function, onError: Function) {
-  let localRepos = loadLocalRepos();
+  let localRepos = loadLocalRepos(reposPath);
 
   // Got rate-limited by Github!
   //fetchRemoteRepos(
@@ -81,7 +84,11 @@ const getRepos = function(onLoad: Function, onError: Function) {
   //  },
   //  onError
   //);
-  onLoad(localRepos);
+  // Hack for testing:
+  //  Downloaded remote repos JSON from Github.
+  let remoteRepos = loadLocalRepos(reposRemoteTmpPath);
+
+  onLoad(remoteRepos.concat(localRepos));
 }
 
 export const repos = express.Router();

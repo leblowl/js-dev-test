@@ -14,10 +14,12 @@ const RepoItem: React.FunctionComponent<{
 
   return (
     <li className={'repo-item ' + selectedClass}>
-      <button onClick={() => emit(event.onSelectRepo, repo.id)}>
+      <button
+        className='name'
+        onClick={() => emit(event.onSelectRepo, repo.id)}>
         {repo.name}
       </button>
-      <span>{repo.description}</span>
+      <span className='description'>{repo.description}</span>
       <span>{repo.language}</span>
       <span>{repo.forks_count}</span>
     </li>
@@ -30,11 +32,18 @@ const LanguageButtons: React.FunctionComponent<{
   emit: Function;
 }> = function({ languages, languageSelected, emit }) {
 
-
   return (
     <div className='button-row'>
       {languages.map((x) => {
-        return <button key={x} onClick={() => emit(event.onSortByLanguage, x)}>{x}</button>;
+        console.log(x);
+        return (
+          <button
+            key={x}
+            className={x === languageSelected ? 'selected' : ''}
+            onClick={() => emit(event.onSortByLanguage, x)}>
+            {x}
+          </button>
+        );
       })}
     </div>
   )

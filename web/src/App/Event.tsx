@@ -48,6 +48,7 @@ const onSortByLanguage = function(
         return x.language === language;
       })
     }
+    state.repoList.languageSelected = language;
     return state;
   });
 }

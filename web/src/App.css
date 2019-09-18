@@ -29,6 +29,10 @@ ul {
   padding: 1em;
 }
 
+.button-row .selected {
+  border: 1px solid blue;
+}
+
 .repo-list {
   width: 100%;
   display: flex;
@@ -47,11 +51,23 @@ ul {
   margin: 1em 1em;
   border-radius: 4px;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
 }
 
-.repo-item button {
+.repo-item button.name {
   color: #0099FF;
+  text-align: left;
+  max-width: 20vw;
+  flex: 1;
+}
+
+.repo-item span.description {
+  flex: 1;
+}
+
+.repo-item span {
+  margin: 0 1em;
+  text-align: left;
 }
 
 .repo-item.selected {
