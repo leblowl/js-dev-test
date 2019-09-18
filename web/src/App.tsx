@@ -93,12 +93,12 @@ class App extends React.Component<Object, AppState> {
     this.state = model.initialModel;
   }
 
-  componentDidMount() {
-    this.emit(event.onAppMount, {});
-  }
-
   emit(event: Function, data: Object) {
     event(this, data);
+  }
+
+  componentDidMount() {
+    this.emit(event.onAppMount, {});
   }
 
   render() {

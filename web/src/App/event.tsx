@@ -17,7 +17,8 @@ const onReceiveLatestCommits = function(
 ) {
   app.setState((state, props) => {
     let ndx = state.entities.repos.indexOf(data.repo);
-    state.entities.repos[ndx].latestCommit = data.data[0] || {
+
+    state.entities.repos[ndx].latestCommit = (data.data[0] && data.data[0].commit) || {
       'author': {'name': 'test', 'date': 'now'},
       'message': 'This is a placeholder message for when Github unblocks me'
     };
@@ -25,15 +26,19 @@ const onReceiveLatestCommits = function(
   });
 }
 
+const getLatestRepoCommit = function(repo: Repo, onLoad: Function, onErr: Function) {
+  request.get(repoCommitUrl(repo), onLoad, onErr);
+}
+
 const onRequestLatestCommits = function(
   app: EmitApp,
-  repos: Repo
+  repos: Array<Repo>
 ) {
-  app.state.entities.repos.forEach((repo) => {
+  repos.forEach((repo) => {
     let onResp = (data: Array<Commit>) => {
       app.emit(onReceiveLatestCommits, { repo, data });
     }
-    request.get(repoCommitUrl(repo), onResp, onResp);
+    getLatestRepoCommit(repo, onResp, onResp);
   });
 }
 
@@ -44,20 +49,28 @@ const onInitState = function(
   app.setState((state, props) => {
     state.entities.repos = data;
     state.repoList.repos = state.entities.repos;
-    state.repoList.languages = [model.ANY_LANGUAGE].concat(state.entities.repos.map(
+
+    let uniqueLanguages = [model.ANY_LANGUAGE].concat(state.entities.repos.map(
       (x) => x.language).filter(onlyUnique));
+    state.repoList.languages = uniqueLanguages;
+
     return state;
-  });
-  app.emit(onRequestLatestCommits, app.state.entities.repos);
+  }, () => app.emit(onRequestLatestCommits, app.state.entities.repos));
+}
+
+const reposUrl = 'http://localhost:4000/repos';
+
+const getRepos = function(onLoad: Function, onErr: Function) {
+  request.get(reposUrl, onLoad, onErr);
 }
 
 const onAppMount = function(
   app: EmitApp,
   data: Array<Repo>
 ) {
-  request.get('http://localhost:4000/repos', (data: Array<Repo>) => {
+  getRepos((data: Array<Repo>) => {
     app.emit(onInitState, data);
-  }, console.debug);
+  }, console.error);
 }
 
 const onSelectRepo = function(
@@ -93,4 +106,4 @@ const onSortByLanguage = function(
   });
 }
 
-export { onAppMount, onInitState, onSelectRepo, onSortByLanguage };
+export { reposUrl, getRepos, getLatestRepoCommit, onAppMount, onInitState, onSelectRepo, onSortByLanguage };
