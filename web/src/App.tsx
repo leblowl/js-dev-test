@@ -1,7 +1,8 @@
 import React from 'react';
 import './App.css';
 import { AppState, Repo, RepoListVM} from './App/typings';
-import * as event from './App/Event';
+import * as model from './App/model';
+import * as event from './App/event';
 import * as request from './util/request';
 
 
@@ -72,16 +73,7 @@ const RepoList: React.FunctionComponent<{
 class App extends React.Component<Object, AppState> {
   constructor(props: Object) {
     super(props);
-    this.state = {
-      entities: {
-        repos: []
-      },
-      repoList: {
-        languages: [],
-        languageSelected: '',
-        repos: []
-      }
-    };
+    this.state = model.initialModel;
   }
 
   componentDidMount() {

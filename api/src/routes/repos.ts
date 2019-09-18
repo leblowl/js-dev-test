@@ -88,7 +88,7 @@ const getRepos = function(onLoad: Function, onError: Function) {
   //  Downloaded remote repos JSON from Github.
   let remoteRepos = loadLocalRepos(reposRemoteTmpPath);
 
-  onLoad(remoteRepos.concat(localRepos));
+  onLoad(remoteRepos.concat(localRepos).filter((x: any) => x.fork === false));
 }
 
 export const repos = express.Router();
@@ -99,7 +99,7 @@ export const repos = express.Router();
 repos.get('/', (req, res) => {
   res.header('Content-Type', 'application/json');
   getRepos(
-    (data: Array<Object>) => {
+    (data: Array<any>) => {
       res.status(200);
       res.json(data);
     },

@@ -1,4 +1,5 @@
 import { AppState, Repo } from './typings';
+import * as model from './model';
 
 
 function onlyUnique(value: any, index: number, self: Array<any>) {
@@ -12,7 +13,7 @@ const onInitState = function(
   app.setState((state, props) => {
     state.entities.repos = data;
     state.repoList.repos = state.entities.repos;
-    state.repoList.languages = [ANY_LANGUAGE].concat(state.entities.repos.map(
+    state.repoList.languages = [model.ANY_LANGUAGE].concat(state.entities.repos.map(
       (x) => x.language).filter(onlyUnique));
     return state;
   });
@@ -34,14 +35,12 @@ const onSelectRepo = function(
   });
 }
 
-const ANY_LANGUAGE = 'Any';
-
 const onSortByLanguage = function(
   app: React.Component<Object, AppState>,
   language: string
 ) {
   app.setState((state, props) => {
-    if (language === ANY_LANGUAGE) {
+    if (language === model.ANY_LANGUAGE) {
       state.repoList.repos = state.entities.repos;
     } else {
       state.repoList.repos = state.entities.repos.filter((x) => {
