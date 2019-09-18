@@ -58,7 +58,7 @@ const LanguageButtons: React.FunctionComponent<{
           <button
             key={x}
             className={x === languageSelected ? 'selected' : ''}
-            onClick={() => emit(event.onSortByLanguage, x)}>
+            onClick={() => emit(event.onFilterByLanguage, x)}>
             {x}
           </button>
         );
