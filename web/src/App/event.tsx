@@ -88,13 +88,12 @@ const onSelectRepo = function(
   id: number
 ) {
   app.setState((state, props) => {
-    state.repoList.repos = state.entities.repos.map((x) => {
+    state.repoList.repos = state.repoList.repos.map((x) => {
       if (x.id === id) {
         x.selected = !x.selected;
-        return x;
-      } else {
-        return x;
-      }});
+      }
+      return x;
+    });
     return state;
   });
 }
