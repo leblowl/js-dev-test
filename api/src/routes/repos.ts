@@ -74,12 +74,14 @@ const fetchRemoteRepos = function(onLoad: Function, onError: Function) {
 const getRepos = function(onLoad: Function, onError: Function) {
   let localRepos = loadLocalRepos();
 
-  fetchRemoteRepos(
-    (data: Array<Object>) => {
-      onLoad(data.concat(localRepos));
-    },
-    onError
-  );
+  // Got rate-limited by Github!
+  //fetchRemoteRepos(
+  //  (data: Array<Object>) => {
+  //    onLoad(data.concat(localRepos));
+  //  },
+  //  onError
+  //);
+  onLoad(localRepos);
 }
 
 export const repos = express.Router();
