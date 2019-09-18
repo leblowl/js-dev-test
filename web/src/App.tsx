@@ -1,9 +1,8 @@
 import React from 'react';
 import './App.css';
-import { AppState, Repo, RepoListVM} from './App/typings';
+import { AppState, Repo, RepoListVM } from './App/typings';
 import * as model from './App/model';
 import * as event from './App/event';
-import * as request from './util/request';
 
 
 const RepoItem: React.FunctionComponent<{
@@ -77,17 +76,15 @@ class App extends React.Component<Object, AppState> {
   }
 
   componentDidMount() {
-    request.get('http://localhost:4000/repos', (data: Array<Repo>) => {
-      this.emit(this, event.onInitState, data);
-    });
+    this.emit(event.onAppMount, {});
   }
 
-  emit(app: React.Component<Object, AppState>, event: Function, data: Object) {
-    event(app, data);
+  emit(event: Function, data: Object) {
+    event(this, data);
   }
 
   render() {
-    let emit = (event: Function, data: Object) => this.emit(this, event, data);
+    let emit = (event: Function, data: Object) => this.emit(event, data);
 
     return (
       <div className='App'>

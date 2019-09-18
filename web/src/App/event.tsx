@@ -1,5 +1,6 @@
-import { AppState, Repo } from './typings';
+import { EmitApp, Repo } from './typings';
 import * as model from './model';
+import * as request from '../util/request';
 
 
 function onlyUnique(value: any, index: number, self: Array<any>) {
@@ -7,7 +8,7 @@ function onlyUnique(value: any, index: number, self: Array<any>) {
 }
 
 const onInitState = function(
-  app: React.Component<Object, AppState>,
+  app: EmitApp,
   data: Array<Repo>
 ) {
   app.setState((state, props) => {
@@ -19,8 +20,17 @@ const onInitState = function(
   });
 }
 
+const onAppMount = function(
+  app: EmitApp,
+  data: Array<Repo>
+) {
+  request.get('http://localhost:4000/repos', (data: Array<Repo>) => {
+    app.emit(onInitState, data);
+  });
+}
+
 const onSelectRepo = function(
-  app: React.Component<Object, AppState>,
+  app: EmitApp,
   id: number
 ) {
   app.setState((state, props) => {
@@ -36,7 +46,7 @@ const onSelectRepo = function(
 }
 
 const onSortByLanguage = function(
-  app: React.Component<Object, AppState>,
+  app: EmitApp,
   language: string
 ) {
   app.setState((state, props) => {
@@ -52,4 +62,4 @@ const onSortByLanguage = function(
   });
 }
 
-export { onInitState, onSelectRepo, onSortByLanguage };
+export { onAppMount, onInitState, onSelectRepo, onSortByLanguage };

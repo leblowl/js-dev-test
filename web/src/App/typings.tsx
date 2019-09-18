@@ -22,3 +22,6 @@ export interface AppState extends Object {
   repoList: RepoListVM;
 }
 
+export interface EmitApp extends React.Component<Object, AppState> {
+  emit: Function;
+}
