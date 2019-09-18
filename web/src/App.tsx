@@ -1,76 +1,9 @@
 import React from 'react';
 import './App.css';
-import { AppState, Repo, RepoListVM} from './App.typings';
+import { AppState, Repo, RepoListVM} from './App/typings';
+import * as event from './App/Event';
+import * as request from './util/request';
 
-// Util
-
-const get = function(url: string, onload: Function) {
-  let req = new XMLHttpRequest();
-
-  req.responseType = 'json';
-  req.open('GET', url);
-  req.onload = function(e) {
-    if (this.status === 200) {
-      onload(this.response);
-    }
-  };
-  req.send();
-}
-
-function onlyUnique(value: any, index: number, self: Array<any>) {
-      return self.indexOf(value) === index;
-}
-
-// Events
-
-const onInitState = function(
-  app: React.Component<Object, AppState>,
-  data: Array<Repo>
-) {
-  app.setState((state, props) => {
-    state.entities.repos = data;
-    state.repoList.repos = state.entities.repos;
-    state.repoList.languages = [ANY_LANGUAGE].concat(state.entities.repos.map(
-      (x) => x.language).filter(onlyUnique));
-    return state;
-  });
-}
-
-const onSelectRepo = function(
-  app: React.Component<Object, AppState>,
-  id: number
-) {
-  app.setState((state, props) => {
-    state.repoList.repos = state.entities.repos.map((x) => {
-      if (x.id === id) {
-        x.selected = !x.selected;
-        return x;
-      } else {
-        return x;
-      }});
-    return state;
-  });
-}
-
-const ANY_LANGUAGE = 'Any';
-
-const onSortByLanguage = function(
-  app: React.Component<Object, AppState>,
-  language: string
-) {
-  app.setState((state, props) => {
-    if (language === ANY_LANGUAGE) {
-      state.repoList.repos = state.entities.repos;
-    } else {
-      state.repoList.repos = state.entities.repos.filter((x) => {
-        return x.language === language;
-      })
-    }
-    return state;
-  });
-}
-
-// Views
 
 const RepoItem: React.FunctionComponent<{
   repo: Repo;
@@ -81,7 +14,7 @@ const RepoItem: React.FunctionComponent<{
 
   return (
     <li className={'repo-item ' + selectedClass}>
-      <button onClick={() => emit(onSelectRepo, repo.id)}>
+      <button onClick={() => emit(event.onSelectRepo, repo.id)}>
         {repo.name}
       </button>
       <span>{repo.description}</span>
@@ -101,7 +34,7 @@ const LanguageButtons: React.FunctionComponent<{
   return (
     <div className='button-row'>
       {languages.map((x) => {
-        return <button key={x} onClick={() => emit(onSortByLanguage, x)}>{x}</button>;
+        return <button key={x} onClick={() => emit(event.onSortByLanguage, x)}>{x}</button>;
       })}
     </div>
   )
@@ -143,8 +76,8 @@ class App extends React.Component<Object, AppState> {
   }
 
   componentDidMount() {
-    get('http://localhost:4000/repos', (data: Array<Repo>) => {
-      this.emit(this, onInitState, data);
+    request.get('http://localhost:4000/repos', (data: Array<Repo>) => {
+      this.emit(this, event.onInitState, data);
     });
   }
 
